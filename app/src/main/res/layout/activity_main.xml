@@ -2,34 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activities.MainActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10pt"
-        android:text="Для начала вам нужно привязать прибор c которым будете работать (это делается в настнойках блютуз соединений. Пароль прибора - 1234). " />
+        android:text="@string/instruction_1" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10pt"
-        android:text="Потом нужно выбрать тот, с которого хотите получать данные, а после войти в раздел &quot;Измерения&quot;, выбрать или создать серию измерений, и начать работу." />
+        android:text="@string/instruction_2" />
 
     <Button
         android:id="@+id/selectDeviceBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Выбрать прибор" />
+        android:text="@string/selectDeviceBtnText" />
 
     <Button
         android:id="@+id/measurementBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Измерения" />
+        android:text="@string/measurementBtnText" />
 
     <ImageView
         android:id="@+id/imageView"

@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">RGK_Worker</string>
+    <string name="app_name">Bluetooth Курвиметр</string>
+
+    <string name="instruction_1">Для начала вам нужно привязать прибор c которым будете работать (это делается в настнойках Bluetooth соединений. Пароль прибора - 1234).</string>
+    <string name="instruction_2">Потом нужно выбрать тот, с которого хотите получать данные, а после войти в раздел &quot;Измерения&quot;, выбрать или создать серию измерений, и начать работу.</string>
+    <string name="selectDeviceBtnText">Выбрать прибор</string>
+    <string name="measurementBtnText">Измерения</string>
+
+    <string name="checkButtonText">Проверить разрешения</string>
+    <string name="btSettingButtonText">Настройки Bluetooth</string>
+    <string name="appSettingButtonText">Настройки Приложения</string>
+    <string name="deviceListText">Список привязаных девайсов:</string>
+
 </resources>

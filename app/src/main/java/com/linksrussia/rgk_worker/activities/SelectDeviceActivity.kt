@@ -12,10 +12,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import android.widget.CheckBox
-import android.widget.GridLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -24,6 +21,7 @@ import com.linksrussia.rgk_worker.R
 import com.linksrussia.rgk_worker.dto.BluetoothDeviceWrapper
 import com.linksrussia.rgk_worker.util.DeviceDataUtil
 import com.linksrussia.rgk_worker.util.DialogUtil
+import kotlin.concurrent.thread
 
 class SelectDeviceActivity : AppCompatActivity() {
     val ACCESS_COARSE_LOCATION_CODE = 33
@@ -80,7 +78,9 @@ class SelectDeviceActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        renderBonded()
+        runOnUiThread {
+            renderBonded()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -94,6 +94,7 @@ class SelectDeviceActivity : AppCompatActivity() {
             deviceMap[bondedDevice.address] =
                 BluetoothDeviceWrapper(bondedDevice, bondedDevice.name)
         }
+
 
         val layout = findViewById<GridLayout>(R.id.bondedDevicesLayout)
         layout.removeAllViews()
@@ -109,8 +110,7 @@ class SelectDeviceActivity : AppCompatActivity() {
         deviceMap.forEach { (name: String?, bluetoothDeviceWrapper: BluetoothDeviceWrapper) ->
 
             val inflate: View = layoutInflater.inflate(R.layout.item_device, layout, false)
-            (inflate.findViewById<View>(R.id.deviceName) as TextView).text =
-                bluetoothDeviceWrapper.getName()
+
             (inflate.findViewById<View>(R.id.deviceAddress) as TextView).text =
                 bluetoothDeviceWrapper.device.address
             inflate.setOnClickListener { v: View? ->
@@ -121,12 +121,24 @@ class SelectDeviceActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
 
-                DeviceDataUtil.createSessionForSelectedDevice(this::renderBonded)
+
+                DeviceDataUtil.createSessionForSelectedDevice {
+                    Toast.makeText(
+                        this@SelectDeviceActivity,
+                        String.format("Прибор %s подключен", bluetoothDeviceWrapper.getName()),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    renderBonded()
+                }
             }
+
+            val checkBox = inflate.findViewById<View>(R.id.checkBox) as CheckBox
+            checkBox.text = bluetoothDeviceWrapper.getName()
 
             if (App.isDeviceConnected()
                 && bluetoothDeviceWrapper.device.address.equals(selectedDevice?.address)
-            ) (inflate.findViewById<View>(R.id.checkBox) as CheckBox).isChecked = true
+            ) checkBox.isChecked = true
 
             layout.addView(inflate)
         }

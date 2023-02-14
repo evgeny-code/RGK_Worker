@@ -10,31 +10,25 @@
         android:id="@+id/checkButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Проверить разрешения" />
+        android:text="@string/checkButtonText" />
 
     <Button
         android:id="@+id/btSettingButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Настройки Bluetooth" />
+        android:text="@string/btSettingButtonText" />
 
     <Button
         android:id="@+id/appSettingButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Настройки Приложения" />
-
-    <!--<Button
-        android:id="@+id/searchButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Поиск прибора" />-->
+        android:text="@string/appSettingButtonText" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10sp"
-        android:text="Список привязаных девайсов:" />
+        android:text="@string/deviceListText" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -50,14 +44,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="1"
-                android:padding="6sp"></GridLayout>
+                android:padding="6dp"></GridLayout>
 
             <GridLayout
                 android:id="@+id/findDevicesLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="1"
-                android:padding="6sp"></GridLayout>
+                android:padding="6dp"></GridLayout>
         </LinearLayout>
 
     </ScrollView>
