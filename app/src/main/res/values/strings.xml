@@ -3,12 +3,25 @@
 
     <string name="instruction_1">Для начала вам нужно привязать прибор c которым будете работать (это делается в настнойках Bluetooth соединений. Пароль прибора - 1234).</string>
     <string name="instruction_2">Потом нужно выбрать тот, с которого хотите получать данные, а после войти в раздел &quot;Измерения&quot;, выбрать или создать серию измерений, и начать работу.</string>
-    <string name="selectDeviceBtnText">Выбрать прибор</string>
+    <string name="selectDeviceBtnText">Подключить прибор</string>
     <string name="measurementBtnText">Измерения</string>
+    <string name="infoBtnText">Описание / Инструкция</string>
 
     <string name="checkButtonText">Проверить разрешения</string>
     <string name="btSettingButtonText">Настройки Bluetooth</string>
     <string name="appSettingButtonText">Настройки Приложения</string>
-    <string name="deviceListText">Список привязаных девайсов:</string>
+    <string name="deviceListText">Список привязаных Bluetooth девайсов:</string>
+
+    <string name="seriesNameHint">Название измерения</string>
+    <string name="measurementDeviceInfoPattern">Ожидание данных с прибора %s [%s]</string>
+    <string name="needConfirm">Нужно подтверждение</string>
+    <string name="confirmDelete">Вы уверены что хотите удалить серию измерений?</string>
+    <string name="yes">ДА</string>
+    <string name="no">НЕТ</string>
+    <string name="add">Добавить</string>
+    <string name="cancel">Отмена</string>
+    <string name="noDeviceConnected">Нет подключения к прибору с которого можно получать данные.</string>
+    <string name="noSelectDeviceBtnText">Пока не надо</string>
+    <string name="ok">OK</string>
 
 </resources>

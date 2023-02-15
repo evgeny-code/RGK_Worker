@@ -17,5 +17,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.measurementBtn).setOnClickListener { btn: View? ->
             startActivity(Intent(this, SeriesActivity::class.java))
         }
+        findViewById<View>(R.id.infoBtn).setOnClickListener { btn: View? ->
+            startActivity(Intent(this, InfoActivity::class.java))
+        }
     }
 }

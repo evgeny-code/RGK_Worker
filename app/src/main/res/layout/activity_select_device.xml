@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.SelectDeviceActivity">
+    tools:context=".activities.SelectDeviceActivity"
+    android:padding="10dp">
 
     <Button
         android:id="@+id/checkButton"
@@ -23,6 +24,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/appSettingButtonText" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_cyclic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="match_parent"
@@ -44,14 +54,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="1"
-                android:padding="6dp"></GridLayout>
+                android:padding="3dp"></GridLayout>
 
             <GridLayout
                 android:id="@+id/findDevicesLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="1"
-                android:padding="6dp"></GridLayout>
+                android:padding="3dp"></GridLayout>
         </LinearLayout>
 
     </ScrollView>

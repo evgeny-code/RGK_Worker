@@ -21,15 +21,15 @@ public class DialogUtil {
 
     public Dialog infoDialog(Activity activity, String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage(msg).setPositiveButton("OK", (dialog, id) -> dialog.dismiss());
+        builder.setMessage(msg).setPositiveButton(R.string.ok, (dialog, id) -> dialog.dismiss());
         return builder.create();
     }
 
     public Dialog onCreateNoDeviceForkDialog(MeasurementActivity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage("Нет подключения к прибору с которого можно получать данные.")
-                .setPositiveButton("Выбрать прибор", (dialog, id) -> activity.startActivity(new Intent(activity, SelectDeviceActivity.class)))
-                .setNegativeButton("Пока не надо", (dialog, id) -> dialog.dismiss());
+        builder.setMessage(R.string.noDeviceConnected)
+                .setPositiveButton(R.string.selectDeviceBtnText, (dialog, id) -> activity.startActivity(new Intent(activity, SelectDeviceActivity.class)))
+                .setNegativeButton(R.string.noSelectDeviceBtnText, (dialog, id) -> dialog.dismiss());
 
         return builder.create();
     }
@@ -46,7 +46,7 @@ public class DialogUtil {
         View dialogContent = inflater.inflate(R.layout.dialog_series_add, null);
         builder.setView(dialogContent)
                 // Add action buttons
-                .setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         EditText seriesNameEditText = dialogContent.findViewById(R.id.seriesNameEditText);
@@ -58,7 +58,7 @@ public class DialogUtil {
                         seriesNameEditText.setText("");
                     }
                 })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         EditText seriesNameEditText = dialogContent.findViewById(R.id.seriesNameEditText);
                         seriesNameEditText.setText("");

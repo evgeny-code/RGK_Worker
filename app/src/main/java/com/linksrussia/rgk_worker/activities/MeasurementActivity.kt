@@ -89,7 +89,7 @@ class MeasurementActivity : AppCompatActivity() {
             Snackbar.make(
                 findViewById(R.id.measurementDataLayout),
                 String.format(
-                    "Ожидание данных с прибора %s [%s]",
+                    getString(R.string.measurementDeviceInfoPattern),
                     App.selectedDevice?.name,
                     App.selectedDevice?.address
                 ),

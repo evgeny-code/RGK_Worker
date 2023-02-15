@@ -28,7 +28,7 @@ public class DeviceSessionWorker {
             Log.e("BluetoothSocket", "IllegalAccessException", e);
         }
 
-        Log.e("ERROR_MESSAGE", "Не могу создать Bluetooth Socket");
+        Log.e("ERROR_MESSAGE", "Can't create Bluetooth Socket");
 
         return null;
     }
@@ -45,12 +45,12 @@ public class DeviceSessionWorker {
                 App.Companion.setDeviceConnected(true);
                 return bluetoothSocket;
             } catch (Exception e) {
-                Log.e("BluetoothSocket", "Cant connect");
+                Log.e("BluetoothSocket", "Can't connect");
                 closeSocket(bluetoothSocket);
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ie) {
-                    Log.e("DATA", "Cant sleep", ie);
+                    Log.e("DATA", "Can't sleep", ie);
                     currentThread.interrupt();
                 }
 
@@ -75,7 +75,7 @@ public class DeviceSessionWorker {
     }
 
 
-    public static void receiveData(BluetoothSocket bluetoothSocket, Consumer<String> dataConsumer) throws IOException {
+    public static void receiveData(BluetoothSocket bluetoothSocket, Consumer<String> dataConsumer) {
         if (null == bluetoothSocket)
             return;
 

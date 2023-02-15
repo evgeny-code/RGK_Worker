@@ -12,16 +12,13 @@ class DeviceDataUtil {
         private var bluetoothSocket: BluetoothSocket? = null
         private var receiveThread: Thread? = null
 
-        fun createSessionForSelectedDevice(callback: () -> Unit) {
+        fun createSessionForSelectedDevice(): Boolean {
             receiveThread?.interrupt()
 
-            if (null != bluetoothSocket) {
-                DeviceSessionWorker.closeSocket(bluetoothSocket)
-            }
-
+            DeviceSessionWorker.closeSocket(bluetoothSocket)
             bluetoothSocket = DeviceSessionWorker.getConnectedSocket(App.selectedDevice, 1)
-            callback.invoke()
 
+            // data exchange
             if (null != bluetoothSocket) {
                 receiveThread = thread {
                     DeviceSessionWorker.receiveData(
@@ -40,7 +37,10 @@ class DeviceDataUtil {
                             }
                         })
                 }
+                return true
             }
+
+            return false;
         }
     }
 }

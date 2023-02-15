@@ -27,7 +27,7 @@ class SeriesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_series)
 
         val dialog: Dialog = dialogUtil.onCreateAddSeriesDialog(this)
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view -> dialog.show() }
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { dialog.show() }
 
         renderData()
     }
@@ -42,24 +42,24 @@ class SeriesActivity : AppCompatActivity() {
             val inflate: View =
                 layoutInflater.inflate(R.layout.item_series, measurementLayout, false)
             inflate.findViewById<View>(R.id.itemMeasurementExport)
-                .setOnClickListener { view: View? ->
+                .setOnClickListener {
                     ShareUtil.sendData(
                         this@SeriesActivity, measureDao.getBySeries(series.id)
                     )
                 }
             inflate.findViewById<View>(R.id.itemMeasurementDelete)
-                .setOnClickListener { view: View? ->
-                    AlertDialog.Builder(this).setTitle("Нужно подтверждение")
-                        .setMessage("Вы уверены что хотите удалить серю измерений?")
+                .setOnClickListener {
+                    AlertDialog.Builder(this).setTitle(R.string.needConfirm)
+                        .setMessage(R.string.confirmDelete)
                         .setIcon(android.R.drawable.ic_dialog_alert).setPositiveButton(
-                            "ДА"
-                        ) { dialogInterface: DialogInterface?, i: Int ->
+                            R.string.yes
+                        ) { _: DialogInterface?, _: Int ->
                             seriesDao.delete(series)
                             renderData()
-                        }.setNegativeButton("НЕТ", null).show()
+                        }.setNegativeButton(R.string.no, null).show()
                 }
             (inflate.findViewById<View>(R.id.itemMeasurementName) as TextView).setText(series.name)
-            inflate.setOnClickListener { view: View? ->
+            inflate.setOnClickListener {
                 startActivity(
                     Intent(
                         this, MeasurementActivity::class.java
