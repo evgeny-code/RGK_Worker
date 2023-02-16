@@ -14,11 +14,9 @@ import com.linksrussia.rgk_worker.App
 import com.linksrussia.rgk_worker.R
 import com.linksrussia.rgk_worker.db.dao.MeasureDao
 import com.linksrussia.rgk_worker.db.dao.SeriesDao
-import com.linksrussia.rgk_worker.util.DialogUtil
 import com.linksrussia.rgk_worker.util.ShareUtil
 
 class SeriesActivity : AppCompatActivity() {
-    private val dialogUtil = DialogUtil()
     private val seriesDao: SeriesDao = App.getDB().seriesDao()!!
     private val measureDao: MeasureDao = App.getDB().measureDao()!!
 
@@ -26,7 +24,7 @@ class SeriesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_series)
 
-        val dialog: Dialog = dialogUtil.onCreateAddSeriesDialog(this)
+        val dialog: Dialog = App.DIALOG_UTIL.onCreateAddSeriesDialog(this)
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { dialog.show() }
 
         renderData()
@@ -58,7 +56,7 @@ class SeriesActivity : AppCompatActivity() {
                             renderData()
                         }.setNegativeButton(R.string.no, null).show()
                 }
-            (inflate.findViewById<View>(R.id.itemMeasurementName) as TextView).setText(series.name)
+            (inflate.findViewById<View>(R.id.itemMeasurementName) as TextView).text = series.name
             inflate.setOnClickListener {
                 startActivity(
                     Intent(

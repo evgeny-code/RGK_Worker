@@ -13,78 +13,98 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.linksrussia.rgk_worker.App
 import com.linksrussia.rgk_worker.R
 import com.linksrussia.rgk_worker.dto.BluetoothDeviceWrapper
 import com.linksrussia.rgk_worker.util.DeviceDataUtil
-import com.linksrussia.rgk_worker.util.DialogUtil
 import kotlin.concurrent.thread
 
 
 class SelectDeviceActivity : AppCompatActivity() {
-    val ACCESS_COARSE_LOCATION_CODE = 33
-    val ACCESS_FINE_LOCATION_CODE = 55
 
-    private val dialogUtil = DialogUtil()
-
-    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_device)
 
-        findViewById<View>(R.id.checkButton).setOnClickListener { v: View? ->
-            var isOk = true
-
-            if (!this@SelectDeviceActivity.checkOrRequest(
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    ACCESS_COARSE_LOCATION_CODE
-                )
-            ) {
-                isOk = false
-            }
-            if (!this@SelectDeviceActivity.checkOrRequest(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    ACCESS_FINE_LOCATION_CODE
-                )
-            ) {
-                isOk = false
-            }
-            if (isOk) {
-                dialogUtil.infoDialog(
+        findViewById<View>(R.id.checkButton).setOnClickListener {
+            if (checkPermissions()) {
+                App.DIALOG_UTIL.infoDialog(
                     this,
                     "Все необходимые разрешения у приложения есть"
-                ).show()
-            } else {
-                dialogUtil.infoDialog(
-                    this,
-                    "Для работы приложения нужен доступ к местоположению"
                 ).show()
             }
         }
 
-        findViewById<View>(R.id.btSettingButton).setOnClickListener { v: View? ->
+        findViewById<View>(R.id.btSettingButton).setOnClickListener {
             startActivity(
                 Intent(Settings.ACTION_BLUETOOTH_SETTINGS)
             )
         }
 
-        findViewById<View>(R.id.appSettingButton).setOnClickListener { v: View? ->
-            val intent =
-                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        findViewById<View>(R.id.appSettingButton).setOnClickListener {
             val uri = Uri.fromParts("package", packageName, null)
-            intent.data = uri
-            startActivity(intent)
-        }
-
-        thread {
-            renderBonded()
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).also { intent ->
+                intent.data = uri
+                startActivity(intent)
+            }
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+    override fun onResume() {
+        super.onResume()
+
+        if (checkPermissions()) {
+            thread {
+                renderBonded()
+            }
+        }
+    }
+
+    private fun checkPermissions(): Boolean {
+        if (
+            PackageManager.PERMISSION_DENIED == ContextCompat.checkSelfPermission(
+                this@SelectDeviceActivity,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+            ||
+            PackageManager.PERMISSION_DENIED == ContextCompat.checkSelfPermission(
+                this@SelectDeviceActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        ) {
+            ActivityCompat.requestPermissions(
+                this@SelectDeviceActivity,
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ),
+                2
+            )
+
+            return false
+        }
+
+        if (ContextCompat.checkSelfPermission(
+                this@SelectDeviceActivity,
+                Manifest.permission.BLUETOOTH_CONNECT
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ActivityCompat.requestPermissions(
+                    this@SelectDeviceActivity,
+                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+                    2
+                )
+                return false
+            }
+        }
+
+        return true
+    }
+
     @SuppressLint("MissingPermission")
     fun renderBonded() {
         val bluetoothManager: BluetoothManager =
@@ -101,14 +121,14 @@ class SelectDeviceActivity : AppCompatActivity() {
             layout.removeAllViews()
 
             if (deviceMap.isEmpty())
-                dialogUtil.infoDialog(
+                App.DIALOG_UTIL.infoDialog(
                     this@SelectDeviceActivity,
                     "У вас нет привязанных Bluetooth приборов"
                 ).show()
 
 
             val selectedDevice: BluetoothDevice? = App.selectedDevice
-            deviceMap.forEach { (name: String?, bluetoothDeviceWrapper: BluetoothDeviceWrapper) ->
+            deviceMap.forEach { (_: String?, bluetoothDeviceWrapper: BluetoothDeviceWrapper) ->
                 val inflate: View = layoutInflater.inflate(R.layout.item_device, layout, false)
 
                 (inflate.findViewById<View>(R.id.deviceAddress) as TextView).text =
@@ -156,21 +176,5 @@ class SelectDeviceActivity : AppCompatActivity() {
 
             findViewById<View>(R.id.progressBar_cyclic).visibility = View.INVISIBLE
         }
-    }
-
-    private fun checkOrRequest(permission: String, requestCode: Int): Boolean {
-        if (ActivityCompat.checkSelfPermission(
-                this@SelectDeviceActivity,
-                permission
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this@SelectDeviceActivity,
-                arrayOf(permission),
-                requestCode
-            )
-            return false
-        }
-        return true
     }
 }
